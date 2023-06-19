@@ -21,11 +21,21 @@ import pickle
 import datetime
 import random
 
-from .tube import Tube
+################
+# If running on short tube, set Minitube to be True.
+################
+
+Minitube = True
+if Minitube == True:
+    from .tube import Mini_tube as Tube
+else:
+    from .tube import Tube
+
 from .data.swage import Swage, SwageRecord
 from .data.tension import Tension, TensionRecord
 from .data.leak import Leak, LeakRecord
 from .data.dark_current import DarkCurrent, DarkCurrentRecord
+from .date.position import Position, PositionRecord
 from .data.umich import UMich_Tension, UMich_TensionRecord
 from .data.umich import UMich_DarkCurrent, UMich_DarkCurrentRecord
 from .data.umich import UMich_Bent, UMich_BentRecord
@@ -50,7 +60,7 @@ class station_pickler:
         '''
         self.path = path
         self.archive = archive
-        self.error_files = {'Swage': set(), 'Tension': set(), 'Leak': set(), 'DarkCurrent': set(), 'Bentness': set()}
+        self.error_files = {'Swage': set(), 'Tension': set(), 'Leak': set(), 'DarkCurrent': set(), 'Bentness': set(), 'Position': set()}
         self.logging = logging
 
     def write_errors(self):
@@ -414,6 +424,88 @@ class station_pickler:
             if self.archive:
                 os.remove(os.path.join(CSV_directory, filename))
 
+    '''
+    This is the swage pickler function that will pickle every 
+    swage csv file that is in the specified directory swagerDirectory
+    '''
+
+    def pickle_position(self):
+        position_directory = os.path.join(self.path, "PositionStation")
+        archive_directory = os.path.join(position_directory, "archive")
+        CSV_directory = os.path.join(position_directory, "PositionData")
+        new_data_directory = os.path.join(self.sMDT_DIR, "new_data")
+
+        for directory in [position_directory, CSV_directory, archive_directory, new_data_directory]:
+            if not os.path.isdir(directory):
+                os.mkdir(directory)
+
+        for filename in os.listdir(CSV_directory):
+            # skip directories
+            if os.path.isdir(filename):
+                   continue
+            # skip .DS_store
+            if filename==".DS_Store":
+                continue
+            with open(os.path.join(CSV_directory, filename)) as CSV_file:
+                if self.archive:
+                    archive_file = open(os.path.join(archive_directory, filename), 'a')
+                for line in CSV_file.readlines():
+                    if self.archive:
+                        archive_file.write(line)
+                    line = line.split(',')
+                    # Here are the different csv types, there have been 3 versions
+                    # The currently used version that includes endplug type 'Protvino' or 'Munich'
+                    if len(line) not in [7]:
+                        self.error_files['Position'].add(filename)
+                        continue
+                    if len(line) == 7:
+                        barcode = line[0].replace('\r', '').replace('\n', '')
+                        chamber = str(line[1]) if line[1] != "" else None
+                        row = int(line[2]) if line[2] != "" else None
+                        column = int(line[3]) if line[3] != "" else None
+                        sDate = datetime.datetime.strptime(line[4], '%m.%d.%Y_%H_%M_%S')
+                        comment = line[5]
+                        user = line[6].replace('\r', '').replace('\n', '')
+                    # Report to terminal unknown formats
+                    else:
+                        if self.logging:
+                            print("File " + filename + " has line with unknown format")
+                        self.error_files['Position'].add(filename)
+                        continue
+
+                    try:
+                        sDate = datetime.datetime.strptime(filename, '%m.%d.%Y_%H_%M_%S_.csv')
+                    except ValueError:
+                        sDate = None
+
+                    # Create tube instance
+                    tube = Tube()
+                    tube.set_ID(barcode)
+
+                    if comment:
+                        tube.new_comment((comment, user, sDate))
+
+                    if self.logging:
+                        print("Pickling position data for tube", barcode)
+
+                    tube.position.add_record(PositionRecord(chamber=chamber,
+                                                          row=row,
+                                                          column =column,
+                                                          date=sDate,
+                                                          user=user))
+
+                    pickled_filename = str(datetime.datetime.now().timestamp()) + str(
+                        random.randrange(100, 999)) + 'position.tube'
+
+                    # Lock and write tube instance to pickle file
+                    # file_lock = locks.Lock(pickled_filename)
+                    # file_lock.lock()
+                    with open(os.path.join(new_data_directory, pickled_filename), "wb") as f:
+                        pickle.dump(tube, f)
+                    # file_lock.unlock()
+
+            if self.archive:
+                os.remove(os.path.join(CSV_directory, filename))
 
     def pickle_bentness(self):
 

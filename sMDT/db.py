@@ -27,7 +27,15 @@ import portalocker
 
 from pathlib import Path
 
-from sMDT.tube import Tube
+################
+# If running on short tube, set Minitube to be True.
+################
+
+Minitube = True
+if Minitube == True:
+    from .tube import Mini_tube as Tube
+else:
+    from .tube import Tube
 from sMDT.legacy import station_pickler
 from sMDT import DBLogger
 
@@ -43,10 +51,10 @@ class db:
         #Gets first two directories of the full path involved in finding the dropbox
         self.dropbox_directory = Path(__file__).resolve().parents[1]
         #uses above path to put the database in this directory as datdabase.s
-        self.db_file = self.dropbox_directory / 'database.s'
-        self.lock_file = self.dropbox_directory /'sMDT'/'locks'/'db_lock.lock'
+        self.db_file = self.dropbox_directory / 'mini_database.s'
+        self.lock_file = self.dropbox_directory /'sMDT'/'locks'/'mini_db_lock.lock'
         #creates new directory from data in 'new data'
-        self.new_data_dir = self.dropbox_directory / 'sMDT' / 'new_data'
+        self.new_data_dir = self.dropbox_directory / 'sMDT' / 'mini_new_data'
         #print("Database directory ",self.new_data_dir)
 
         # We need to check if the database lock file exists. If
@@ -229,10 +237,10 @@ class db_manager:
 
         #if db_path = None, create a new database
         if not db_path:
-            self.db_file = self.dropbox_directory / 'database.s'
+            self.db_file = self.dropbox_directory / 'mini_database.s'
 
-        self.lock_file = self.dropbox_directory /'sMDT'/'locks'/'db_lock.lock'
-        self.new_data_dir = self.dropbox_directory / 'sMDT' / 'new_data'
+        self.lock_file = self.dropbox_directory /'sMDT'/'locks'/'mini_db_lock.lock'
+        self.new_data_dir = self.dropbox_directory / 'sMDT' / 'mini_new_data'
 
         self.lock_file.parent.mkdir(parents=True, exist_ok=True)
         self.lock_file.touch(exist_ok=True)
@@ -268,6 +276,7 @@ class db_manager:
             pickler.pickle_leak()
             pickler.pickle_darkcurrent()
             pickler.pickle_bentness()
+            pickler.pickle_position()
             pickler.write_errors()
             #pickler.pickle_umich()
 

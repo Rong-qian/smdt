@@ -20,7 +20,17 @@ from datetime import datetime
 
 DROPBOX_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(DROPBOX_DIR)
-from sMDT import db, tube
+from sMDT import db
+################
+# If running on short tube, set Minitube to be True.
+################
+
+Minitube = True
+if Minitube == True:
+    from sMDT import Mini_tube as Tube
+else:
+    from sMDT import Tube
+
 from sMDT.data import swage
 path=os.path.dirname(os.path.abspath(__file__))
 

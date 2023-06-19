@@ -49,7 +49,7 @@ MSU_CODE = 'TEST'
 TEST_LEN = 53535353353553
 
 from sMDT import db, tube
-from sMDT.data import swage, status
+from sMDT.data import swage, status, positon
 
 if debug:
     db_man = db.db_manager(testing=True)
@@ -91,6 +91,10 @@ class SwageWidget(QtWidgets.QWidget):
         self.raw_length_entry = QtWidgets.QLineEdit()
         # self.raw_length_entry = CustomLineEdit()
         self.swage_length_entry = QtWidgets.QLineEdit()
+        self.chamber_entry = QtWidgets.QLineEdit()
+        self.row_entry = QtWidgets.QLineEdit()
+        self.column_entry = QtWidgets.QLineEdit()
+
 
         # Here we are adding in the rows with the names for the columns.
         self.swage_entry_layout.addRow("Name:", self.name_entry)
@@ -98,6 +102,10 @@ class SwageWidget(QtWidgets.QWidget):
         self.swage_entry_layout.addRow("Raw Length:", self.raw_length_entry)
         self.swage_entry_layout.addRow("Swage Length:", self.swage_length_entry)
         self.swage_entry_layout.addRow("Clean Code:", self.clean_code_combo)
+        self.swage_entry_layout.addRow("Chamber:", self.chamber_entry)
+        self.swage_entry_layout.addRow("Row:", self.row_entry)
+        self.swage_entry_layout.addRow("Column:", self.column_entry)
+
         self.swage_entry.setLayout(self.swage_entry_layout)
 
         # Here is for the enter button.
@@ -156,8 +164,11 @@ class SwageWidget(QtWidgets.QWidget):
         clean_code = self.clean_code_combo.currentText().strip()
         raw_len = self.raw_length_entry.text().strip()
         swage_len = self.swage_length_entry.text().strip()
+        chamber_len =  self.chamber_entry.text().strip()
+        row_len =  self.row_entry.text().strip()
+        column_len =  self.column_entry.text().strip()
 
-        t = tube.Tube()
+        t = tube.Mini_tube()
         t.set_ID(barcode)
 
         if raw_len == '':
@@ -166,13 +177,25 @@ class SwageWidget(QtWidgets.QWidget):
         if swage_len == '':
             swage_len = None
 
+        if chamber_len == '':
+            chamber_len = None
+
+        if row_len == '':
+            row_len = None
+
+        if column_len == '':
+            column_len = None
+
         if not debug:
             no_barcode      = barcode == ''
             no_name         = name == ''
             no_raw_len      = raw_len == ''
             no_swage_len    = swage_len == ''
+            no_chamber_len  = chamber_len == ''
+            no_row_len      = row_len == ''
+            no_column_len   = column_len == ''
 
-            if no_barcode and no_name and no_raw_len and no_swage_len:
+            if no_barcode and no_name and no_raw_len and no_swage_len and no_chamber_len and no_row_len and no_column_len:
                 return
  
         if raw_len is not None:
@@ -180,6 +203,15 @@ class SwageWidget(QtWidgets.QWidget):
 
         if swage_len is not None:
             swage_len = float(swage_len)
+
+        if chamber_len is not None:
+            chamber_len = int(chamber_len)
+            
+        if row_len is not None:
+            row_len = int(row_len)
+
+        if column_len is not None:
+            column_len = int(column_len)
 
         rec = swage.SwageRecord(
             date=datetime.datetime.now(),
@@ -189,7 +221,17 @@ class SwageWidget(QtWidgets.QWidget):
             user=name
         )
 
+        rec_pos = position.PositonRecord(
+            date=datetime.datetime.now(),
+            chamber=chamber_len, 
+            row=row_len, 
+            column=column_len, 
+            user=name
+        )
+
+
         t.swage.add_record(rec)
+        t.position.add_record(rec_pos)
 
         if not debug:
             try:
@@ -232,6 +274,9 @@ class SwageWidget(QtWidgets.QWidget):
                 clean_code=clean_code,
                 raw_len=raw_len,
                 swage_len=swage_len,
+                chamber_len = chamber_len
+                row_len = row_len
+                column_len = column_len
             )
             '''
         
@@ -250,7 +295,10 @@ class SwageWidget(QtWidgets.QWidget):
         clean_code='',
         raw_len='',
         swage_len='',
-        date=''
+        date='',
+        chamber_len='',
+        row_len='',
+        column_len=''
     ):
         # The format is YYYY-MM-DD---HH:MM:SS
         time_str = datetime.datetime.now().isoformat(sep='_')[0:19]
@@ -290,6 +338,48 @@ class SwageWidget(QtWidgets.QWidget):
             ]
 
             writer.writerow(r)
+
+        f.close()
+
+        ###write csv for Chamber Position 
+        file_name = barcode + '-' + time_str + '_.csv'
+        path_to_archive_folder = Path('archive')
+        path_to_file = path_to_archive_folder / file_name
+        path_to_file.resolve()
+
+        if path_to_file.is_file():
+            file_exists = True
+        else:
+            file_exists = False
+
+        with path_to_file.open('a') as f:
+        # path_str = str(path_to_file.resolve())
+        # with open(path_str, 'a') as f:
+            writer = csv.writer(f)
+
+            if not file_exists:
+                r = [
+                    'Barcode', 
+                    'Name', 
+                    'Chamber', 
+                    'Row', 
+                    'Column',
+                    'Date'
+                ]
+                writer.writerow(r)
+
+            r = [
+                barcode,
+                name,
+                chamber_len,
+                row_len,
+                column_len,
+                date
+            ]
+
+            writer.writerow(r)
+        f.close()
+
 
     def write_to_json(self):
         file_name = f".json"
