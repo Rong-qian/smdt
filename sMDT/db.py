@@ -27,15 +27,9 @@ import portalocker
 
 from pathlib import Path
 
-################
-# If running on short tube, set Minitube to be True.
-################
 
-Minitube = True
-if Minitube == True:
-    from .mini_tube import Mini_tube as Tube
-else:
-    from .tube import Tube
+from .mini_tube import Mini_tube
+from .tube import Tube
 from sMDT.legacy import station_pickler
 from sMDT import DBLogger
 
@@ -121,7 +115,7 @@ class db:
         self.close_shelve(tube_dict)
         return number_of_tubes
 
-    def add_tube(self, tube=Tube()):
+    def add_tube(self, tube=Mini_tube()):
         dt = datetime.datetime.now()
         timestamp = dt.timestamp()
 
@@ -200,7 +194,7 @@ class db:
         if not file_obj.exists():
             file_obj.touch()
 
-        tube = Tube()
+        tube = Mini_tube()
         tube.set_ID(tube_id)
 
         s = str(self.lock_file.resolve())

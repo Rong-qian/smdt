@@ -144,7 +144,7 @@ class station_pickler:
                             except ValueError:
                                 sDate = None
 
-                    tube = Tube()
+                    tube = Mini_tube()
                     tube.set_ID(barcode)
                     tube.set_ID(barcode)
                     try:
@@ -238,7 +238,7 @@ class station_pickler:
                             sDate = None
 
                     # Create tube instance
-                    tube = Tube()
+                    tube = Mini_tube()
                     tube.set_ID(barcode)
 
                     if self.logging:
@@ -319,7 +319,7 @@ class station_pickler:
                     barcode = filename.split('_')[0]
 
                     # Create tube instance
-                    tube = Tube()
+                    tube = Mini_tube()
                     tube.set_ID(barcode)
                     tube.leak.add_record(LeakRecord(leak_rate=leak,
                                                     date=sDate, user=user))
@@ -365,7 +365,7 @@ class station_pickler:
             print("Opening file ",filename)
             with open(os.path.join(CSV_directory, filename)) as CSV_file:
 
-                tube = Tube()
+                tube = Mini_tube()
                 barcode = filename.split('.')[0]
                 tube.set_ID(barcode)
                 if self.archive:
@@ -476,7 +476,7 @@ class station_pickler:
                         sDate = None
 
                     # Create tube instance
-                    tube = Tube()
+                    tube = Mini_tube()
                     tube.set_ID(barcode)
 
                     if comment:
@@ -530,7 +530,7 @@ class station_pickler:
                     archive_file = open(os.path.join(archive_directory, filename), 'a')
 
                 for line in CSV_file.readlines():
-                    tube = Tube()
+                    tube = Mini_tube()
                     if self.archive:
                         archive_file.write(line)
                     line = line.split(',')
@@ -603,7 +603,7 @@ class station_pickler:
                     archive_file = open(os.path.join(archive_directory, filename), 'a')
 
                 for line in CSV_file.readlines():
-                    tube = Tube()
+                    tube = Mini_tube()
                     if self.archive:
                         archive_file.write(line)
                     line = line.split(',')
