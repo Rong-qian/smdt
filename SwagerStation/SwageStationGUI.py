@@ -48,8 +48,8 @@ else:
 MSU_CODE = 'TEST'
 TEST_LEN = 53535353353553
 
-from sMDT import db, tube
-from sMDT.data import swage, status, positon
+from sMDT import db, tube, mini_tube
+from sMDT.data import swage, status, position
 
 if debug:
     db_man = db.db_manager(testing=True)

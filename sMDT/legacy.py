@@ -25,12 +25,9 @@ import random
 # If running on short tube, set Minitube to be True.
 ################
 
-Minitube = True
-if Minitube == True:
-    from .tube import Mini_tube as Tube
-else:
-    from .tube import Tube
 
+from .tube import Tube
+from .mini_tube import Mini_tube
 from .data.swage import Swage, SwageRecord
 from .data.tension import Tension, TensionRecord
 from .data.leak import Leak, LeakRecord
@@ -852,7 +849,7 @@ class station_pickler:
 #        bool_flag             = get_attribute(data_dict, "good")
 
 #        # Now to construct the tube, the test data, and populate everything.
-#        tube_construct = tube.Tube()
+#        tube_construct = mini_tube.Mini_tube()
 #        tube_construct.m_tube_id = tube_id
 
 #        # We will add in the comments. The swage station is the only place

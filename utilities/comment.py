@@ -22,7 +22,7 @@ import datetime
 DROPBOX_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(DROPBOX_DIR)
 
-from sMDT import db, tube
+from sMDT import db, tube, mini_tube
 from sMDT.data.status import ErrorCodes
 
 
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         if YN_answer_loop("Would you like to add a comment to this tube? (Y/N)\n"):
             comment = input("What is your comment?\n")
             if YN_answer_loop("Would you still like to add the above comment to the tube? (Y/N)\n"):
-                tube2 = tube.Tube()
+                tube2 = mini_tube.Mini_tube()
                 tube2.set_ID(tubeID)
                 for code in ErrorCodes:
                     print(int(code), code.name)

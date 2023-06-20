@@ -33,7 +33,7 @@ from pathlib import Path
 
 Minitube = True
 if Minitube == True:
-    from .tube import Mini_tube as Tube
+    from .mini_tube import Mini_tube as Tube
 else:
     from .tube import Tube
 from sMDT.legacy import station_pickler

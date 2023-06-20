@@ -39,8 +39,8 @@ from sMDT import tube, db                                     #import the releva
 from sMDT.data import tension
 tubes = db.db()                                                #make the database object
 dbman = db.db_manager(testing=True)                                        #make the db manager object. NOT NEEDED IF ON THE REAL LAB SYSTEM OR ANY OUTSIDE THE TEST ENVIRONMENT, WILL BE RAN BY THE DATABASE MANAGER PROGRAM
-tube1 = tube.Tube()                                            #instantiate tubes
-tube2 = tube.Tube()
+tube1 = mini_tube.Mini_tube()                                            #instantiate tubes
+tube2 = mini_tube.Mini_tube()
 tube1.m_tube_id = "MSU0000001"                                 #make them both have them same ID
 tube2.m_tube_id = "MSU0000001"
 tube1.tension.add_record(tension.TensionRecord(350))           #add two different tension records

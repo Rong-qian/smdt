@@ -18,7 +18,7 @@ else:
     p = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     sys.path.append(p)
 
-from sMDT import tube
+from sMDT import tube, mini_tube
 
 
 def create_tube_json(tube_obj, save_path=Path('output')):
@@ -36,6 +36,6 @@ def create_tube_json(tube_obj, save_path=Path('output')):
 
 if __name__ == '__main__':
     if debug:
-        t = tube.Tube()
+        t = mini_tube.Mini_tube()
         print(t.to_dict())
         create_tube_json(t)

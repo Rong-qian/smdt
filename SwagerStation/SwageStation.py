@@ -20,16 +20,8 @@ from datetime import datetime
 
 DROPBOX_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(DROPBOX_DIR)
-from sMDT import db
-################
-# If running on short tube, set Minitube to be True.
-################
+from sMDT import db, tube, mini_tube
 
-Minitube = True
-if Minitube == True:
-    from sMDT import Mini_tube as Tube
-else:
-    from sMDT import Tube
 
 from sMDT.data import swage
 path=os.path.dirname(os.path.abspath(__file__))
@@ -40,7 +32,7 @@ NoneValueFloat: float = 3.0E8
 
 def write(code, lengths, cleanCode, name):
     database = db.db()
-    tube1 = tube.Tube()
+    tube1 = mini_tube.Mini_tube()
     tube1.set_ID(code)
 
     raw = float(lengths[0])

@@ -15,6 +15,6 @@ Usage
 -----
 ```python
 from sMDT import tube                                #import the tube and db modules
-tube1 = tube.Tube()
+tube1 = mini_tube.Mini_tube()
 status = tube1.status()                              #Print the tubes status. As this tube has no data, it should return Status.INCOMPLETE
 ```

@@ -22,7 +22,7 @@ import datetime
 DROPBOX_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(DROPBOX_DIR)
 
-from sMDT import db, tube
+from sMDT import db, tube, mini_tube
 from sMDT.data.status import ErrorCodes
 
 
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         tube1 = database.get_tube(tubeID)
     except KeyError:
         if answer_loop("A tube with that ID was not found. Would you like to create it? [Y/N]\n", ['y', 'n']) == 'y':
-            tube1 = tube.Tube()
+            tube1 = mini_tube.Mini_tube()
             tube1.set_ID(tubeID)
             new_tube = True
         else:

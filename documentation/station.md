@@ -67,7 +67,7 @@ def highest(tension_station):                      #Make a function for our mode
 
 from sMDT import tube                              #necessary imports
 from sMDT.data import station,tension
-tube1 = tube.Tube()                                #Instantiate tube object and add tension records
+tube1 = mini_tube.Mini_tube()                                #Instantiate tube object and add tension records
 tube1.tension.add_record(tension.TensionRecord(350))
 tube1.tension.add_record(tension.TensionRecord(370))
 tube1.tension.add_record(tension.TensionRecord(330))

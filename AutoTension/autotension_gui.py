@@ -27,7 +27,7 @@ from freq_tension import FourierTension
 DROPBOX_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(DROPBOX_DIR)
 
-from sMDT import db, tube
+from sMDT import db, tube, mini_tube
 from sMDT.data.tension import Tension, TensionRecord
 
 
@@ -182,7 +182,7 @@ class MainWindow(QtWidgets.QMainWindow):
         tension, frequency =  self.tension_device.get_tension()
         self.update_int_tension(tension)
         # save tension information to the database
-        newTube = tube.Tube()
+        newTube = mini_tube.Mini_tube()
         newTube.set_ID(self.ID_edit.text().strip())
         newTube.tension.add_record(
             TensionRecord(
@@ -238,7 +238,7 @@ class MainWindow(QtWidgets.QMainWindow):
         tension, frequency =  self.tension_device.get_tension()
         self.update_int_tension(tension)
         # save tension information to the database
-        newTube = tube.Tube()
+        newTube = mini_tube.Mini_tube()
         newTube.set_ID(self.ID_edit.text().strip())
         newTube.tension.add_record(
             TensionRecord(
@@ -263,7 +263,7 @@ class MainWindow(QtWidgets.QMainWindow):
         tension, frequency =  self.tension_device.get_tension()
         self.update_int_tension(tension)
         # save tension information to the database
-        newTube = tube.Tube()
+        newTube = mini_tube.Mini_tube()
         newTube.set_ID(self.ID_edit.text().strip())
         newTube.tension.add_record(
             TensionRecord(

@@ -17,14 +17,14 @@ from datetime import datetime
 
 DROPBOX_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(DROPBOX_DIR)
-from sMDT import db, tube
+from sMDT import db, tube, mini_tube
 from sMDT.data import swage
 from sMDT.data.status import ErrorCodes
 
 
 def write(code, lengths, cleanCode, name):
     database = db.db()
-    tube1 = tube.Tube()
+    tube1 = mini_tube.Mini_tube()
     tube1.set_ID(code)
     tube1.swage.add_record(swage.SwageRecord(raw_length=float(lengths[0]), 
                                              swage_length=float(lengths[1]), 
@@ -63,7 +63,7 @@ def handle_enter(event):
         errorCode = int(errorCode)
 
         database = db.db()
-        tube2 = tube.Tube()
+        tube2 = mini_tube.Mini_tube()
         tube2.set_ID(barcode)
         tube2.new_comment((comment, name, datetime.now(), ErrorCodes(errorCode)))
         database.add_tube(tube2)

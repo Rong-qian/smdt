@@ -30,7 +30,7 @@ path=os.path.dirname(os.path.abspath(__file__))
 
 def write(code, lengths, cleanCode, name):
     database = db.db()
-    tube1 = tube.Tube()
+    tube1 = mini_tube.Mini_tube()
     tube1.set_ID(code)
     tube1.swage.add_record(swage.SwageRecord(raw_length=float(lengths[0]), 
                                              swage_length=float(lengths[1]), 

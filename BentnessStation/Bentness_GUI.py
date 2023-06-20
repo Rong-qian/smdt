@@ -21,7 +21,7 @@ import sys
 
 DROPBOX_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(DROPBOX_DIR)
-from sMDT import db, tube
+from sMDT import db, tube, mini_tube
 from sMDT.data import bent
 path=os.path.dirname(os.path.abspath(__file__))
 
@@ -29,7 +29,7 @@ path=os.path.dirname(os.path.abspath(__file__))
 
 def write(code, length, name):
     datab = db.db()
-    tube1 = tube.Tube()
+    tube1 = mini_tube.Mini_tube()
     tube1.set_ID(code)
     if not length:
         length = 0
