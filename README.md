@@ -6,6 +6,8 @@ This directory contains all the code, programs, and data used in the MSU ATLAS s
 It consists of several python and labview applications that act as stations in our lab, which each record data on tubes.
 Recording the data and storing it is handled by the sMDT python package. 
 
+NOTICE: This git branch is for short tubes installed in mini chamber. Please turn to other branch for normal tubes 
+
 Structure
 --------
 Here are the important components of the computer systems at the lab.
@@ -33,7 +35,7 @@ Examples
 --------
 A very simple use case, such as at the tension station. For this code to work without any changes to the system path, the py script containing this snippet needs to be in the same directory the sMDT package (folder) is in.
 ```python
-from sMDT import db,tube                                #import the tube and db modules
+from sMDT import db,mini_tube                                #import the tube and db modules
 from sMDT.data import tension                           #import the tension module
 tubes = db.db()                                         #instantiate the database
 tube1 = mini_tube.Mini_tube()                                     #make a new tube

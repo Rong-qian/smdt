@@ -10,7 +10,8 @@
 #   Known Issues:
 #
 #   Workarounds:
-#
+#   
+#    Rongqian, 28 June, 2023: Updated to include information for the chamber position
 ###############################################################################
 
 pyside_version = None
@@ -168,7 +169,7 @@ class SwageWidget(QtWidgets.QWidget):
         row_len =  self.row_entry.text().strip()
         column_len =  self.column_entry.text().strip()
 
-        t = tube.Mini_tube()
+        t = mini_tube.Mini_tube()
         t.set_ID(barcode)
 
         if raw_len == '':
@@ -221,7 +222,7 @@ class SwageWidget(QtWidgets.QWidget):
             user=name
         )
 
-        rec_pos = position.PositonRecord(
+        rec_pos = position.PositionRecord(
             date=datetime.datetime.now(),
             chamber=chamber_len, 
             row=row_len, 
