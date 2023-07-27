@@ -9,6 +9,7 @@
 #   Known Issues:
 #
 #   Workarounds:
+#   12-2021, RS: Update logic for first tension and second tension
 #
 ###############################################################################
 import datetime
@@ -85,26 +86,50 @@ class Tension(Station, ABC):
     def passed_first_tension(self):
         return any([not i.fail() for i in self.m_records if i is not None])
 
+    # return the date on which the first first-tension test passed
+    def first_tension_date(self):
+        record = self.first_tension_record()
+        if record is None:
+            return None
+        return record.date
+
+
+    # return the complete tension record for the first first-tension test passed
+    def first_tension_record(self):
+        for record in sorted(
+                self.m_records, key = lambda i: (i.date is None, i.date)
+        ):
+            if record is None:
+                return None
+            if not record.fail():
+                return record
+        return None
+
+    # check if the second tension test (two weeks after the first one) passed
     def passed_second_tension(self):
-        found_first_tension = False
-        first_tension_date = None
+        record = self.second_tension_record()
+        if record is None:
+            return False
+        return not record.fail()
+
+    
+    # return the complete tension record for the second tension test passed
+    def second_tension_record(self):
+        if not self.passed_first_tension():
+            return None
+        first_date = self.first_tension_date()
         two_weeks = datetime.timedelta(days = 14)
         for record in sorted(
                 self.m_records, key = lambda i: (i.date is None, i.date)
         ):
             if record is None:
-                return False
+                return None
+            delta = record.date.date() - first_date.date()
+            if not record.fail() and delta >= two_weeks:
+                return record
+        return None
 
-            if not record.fail():
-                if found_first_tension:
-                    delta = record.date.date() - first_tension_date.date()
-                    if delta >= two_weeks:
-                        return True
-                else:
-                    found_first_tension = True
-                    first_tension_date = record.date
-        return False
-
+    
     def status(self):
         if not self.visited():
             return Status.INCOMPLETE

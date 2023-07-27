@@ -30,7 +30,7 @@ class PositionRecord(Record):
         self, 
         chamber = None,
         row = None,
-        column = None,    
+        column = None,
         date=datetime.now(), 
         user=None
     ):
@@ -43,17 +43,13 @@ class PositionRecord(Record):
         self.date = date
 
     def fail(self):
-        """
-
-        """
-
         # Tubes, at this point in time, are not going to be failed on the basis
         # of chamber position.
         return False
         
     def __str__(self):
         # Using string concatenation here.
-        a = f"Chamber: {self.chamber}\n"
+        a = f"Tube is in Chamber: {self.chamber}\n"
         b = f"Row: {self.row}\n"
         c = f"Column: {self.column}\n"
         d = f"Recorded on: {self.date}\n"
@@ -68,7 +64,7 @@ class Position(Station, ABC):
     The Position station class, manages the relevant records for a particular tube.
     """
     def __init__(self): 
-        super().__init__()
+        Station.__init__(self)
 
     def __str__(self):
         a = "Position Data: " + (self.status().name or '') + "\n"

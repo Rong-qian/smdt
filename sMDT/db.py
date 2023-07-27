@@ -11,6 +11,8 @@
 #   Workarounds: In order to better ensure that the database access is 
 #       restricted, the portalocker library is used; this is a cross-platform
 #       locking library.
+#  Updates:
+#  2023-06 Ronqian Qian and Reinhard Schwienhorst: Change to mini tube
 #
 ###############################################################################
 
@@ -29,7 +31,6 @@ from pathlib import Path
 
 
 from .mini_tube import Mini_tube
-from .tube import Tube
 from sMDT.legacy import station_pickler
 from sMDT import DBLogger
 
@@ -48,8 +49,8 @@ class db:
         self.db_file = self.dropbox_directory / 'mini_database.s'
         self.lock_file = self.dropbox_directory /'sMDT'/'locks'/'mini_db_lock.lock'
         #creates new directory from data in 'new data'
-        self.new_data_dir = self.dropbox_directory / 'sMDT' / 'mini_new_data'
-        #print("Database directory ",self.new_data_dir)
+        self.new_data_dir = self.dropbox_directory / 'sMDT' / 'new_data'
+        print("Database directory ",self.new_data_dir)
 
         # We need to check if the database lock file exists. If
         # not, then we'll have to make those directories.
@@ -92,6 +93,7 @@ class db:
         except portalocker.LockException:
             # Just in-case we can't open the database, we'll return an
             # empty dictionary.
+            print("Warning: Could not open database file, creating empty dictionary")
             return_dict = dict()
 
         return return_dict
@@ -234,7 +236,7 @@ class db_manager:
             self.db_file = self.dropbox_directory / 'mini_database.s'
 
         self.lock_file = self.dropbox_directory /'sMDT'/'locks'/'mini_db_lock.lock'
-        self.new_data_dir = self.dropbox_directory / 'sMDT' / 'mini_new_data'
+        self.new_data_dir = self.dropbox_directory / 'sMDT' / 'new_data'
 
         self.lock_file.parent.mkdir(parents=True, exist_ok=True)
         self.lock_file.touch(exist_ok=True)

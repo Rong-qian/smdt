@@ -23,9 +23,7 @@ class Mini_tube(Tube):
     def __add__(self, other):
         ret = Mini_tube()
         #Tube.__add__(self,other)
-        ret.chamber = self.chamber
-        ret.row = self.row
-        ret.column = self.column        
+        ret.position = self.position      
         ret.m_tube_id = self.m_tube_id
         ret.m_comments = self.m_comments + other.m_comments
         ret.swage = self.swage + other.swage

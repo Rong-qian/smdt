@@ -11,7 +11,7 @@
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from sMDT import db, tube
+from sMDT import db, mini_tube
 from sMDT.data import status
 import sys
 
@@ -54,6 +54,10 @@ incOld=0
 DelivOld=0
 UMichPassOld=0
 first_swage_date=datetime.today()
+
+if len(tubes)==0:
+    print("no mini tubes in database yet")
+    sys.exit(0)
 
 for tube in tubes:
     tottot+=1
@@ -101,25 +105,25 @@ for tube in tubes:
 totMod0 -= bentMod0
 totProd -= bentProd
 
-print("Old, pre-mod0 tubes (before August 2020):")
-print(" ",totOld," swaged, good+inc ",goodOld,"+",incOld,"=",goodOld+incOld,", fail ",errOld,", failure rate %2.1f%%" % (errOld/totOld*100.))
-print(" First tube was officially swaged on ",first_swage_date)
-print(" Delivered to University of Michigan ",DelivOld+UMichPassOld,", pass ",UMichPassOld)
-print("Module 0 tubes (Aug 2020 to Nov 2020):")
-print(" ",totMod0," swaged, good+inc ",goodMod0,"+",incMod0,"=",goodMod0+incMod0,", fail ",errMod0,", failure rate %2.1f%%" % (errMod0/totMod0*100.))
-print(" Plus",bentMod0," bent tubes.")
-print(" Delivered to University of Michigan ",DelivOld+UMichPassMod0,", pass ",UMichPassMod0)
-print("Production tubes (since Dec 2020):")
+#print("Old, pre-mod0 tubes (before August 2020):")
+#print(" ",totOld," swaged, good+inc ",goodOld,"+",incOld,"=",goodOld+incOld,", fail ",errOld,", failure rate %2.1f%%" % (errOld/totOld*100.))
+print(" First mini tube was officially swaged on ",first_swage_date)
+#print(" Delivered to University of Michigan ",DelivOld+UMichPassOld,", pass ",UMichPassOld)
+#print("Module 0 tubes (Aug 2020 to Nov 2020):")
+#print(" ",totMod0," swaged, good+inc ",goodMod0,"+",incMod0,"=",goodMod0+incMod0,", fail ",errMod0,", failure rate %2.1f%%" % (errMod0/totMod0*100.))
+#print(" Plus",bentMod0," bent tubes.")
+#print(" Delivered to University of Michigan ",DelivOld+UMichPassMod0,", pass ",UMichPassMod0)
+print("Mini tubes (since June 2023):")
 print(" ",totProd," swaged, good+inc ",goodProd,"+",incProd,"=",goodProd+incProd,", fail ",errProd,", failure rate %2.1f%%" % (errProd/totProd*100.))
 print(" Plus",bentProd," bent tubes.")
-print(" Delivered to University of Michigan ",DelivProd+UMichPassProd,", pass ",UMichPassProd)
-tubesNeeded=576*9+40*472
-print(" Tubes needed:",tubesNeeded,", completed fraction %2.1f%%" % ((goodProd+incProd)/tubesNeeded*100.))
-print("Total tubes:")
-print(" ",totMod0+totProd," swaged, good+inc ",goodMod0+goodProd,"+",incMod0+incProd,"=",goodMod0+goodProd+incMod0+incProd,", fail ",errMod0+errProd,", failure rate %2.1f%%" % ((errMod0+errProd)/(totMod0+totProd)*100.))
-print("  Plus",bentMod0+bentProd," bent tubes.")
-print("  Plus",UMichMade," tubes made at University of Michigan, of which",UMichMadePass," passed.")
-print("  Plus",tubesErr,"tubes without date.")
-print(" ",tottot,"tubes all together in the database, compared to",tubesErr+bentMod0+bentProd+totMod0+totProd+UMichMade,"tubes counted.")
+#print(" Delivered to University of Michigan ",DelivProd+UMichPassProd,", pass ",UMichPassProd)
+#tubesNeeded=576*9+40*472
+#print(" Tubes needed:",tubesNeeded,", completed fraction %2.1f%%" % ((goodProd+incProd)/tubesNeeded*100.))
+#print("Total tubes:")
+#print(" ",totMod0+totProd," swaged, good+inc ",goodMod0+goodProd,"+",incMod0+incProd,"=",goodMod0+goodProd+incMod0+incProd,", fail ",errMod0+errProd,", failure rate %2.1f%%" % ((errMod0+errProd)/(totMod0+totProd)*100.))
+#print("  Plus",bentMod0+bentProd," bent tubes.")
+#print("  Plus",UMichMade," tubes made at University of Michigan, of which",UMichMadePass," passed.")
+#print("  Plus",tubesErr,"tubes without date.")
+#print(" ",tottot,"tubes all together in the database, compared to",tubesErr+bentMod0+bentProd+totMod0+totProd+UMichMade,"tubes counted.")
 
 sys.exit(0)

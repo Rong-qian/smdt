@@ -12,6 +12,7 @@
 #
 ###############################################################################
 
+from . import tube
 import pytest
 
 
@@ -21,7 +22,7 @@ def test_tube_init():
     '''
     from . import tube
     from .data import swage, tension, leak, dark_current
-    tube1 = mini_tube.Mini_tube()
+    tube1 = tube.Tube()
     assert tube1.m_comments == []
     assert tube1.m_tube_id == None
     assert tube1.swage.get_record('all') == []
@@ -35,7 +36,7 @@ def test_tube_comments():
     Simple test of the comment system
     '''
     from . import tube
-    tube1 = mini_tube.Mini_tube()
+    tube1 = tube.Tube()
     tube1.new_comment("This tube is for testing purposes")
     assert tube1.get_comments() == ["This tube is for testing purposes"]
 
@@ -46,8 +47,8 @@ def test_tube_add():
     '''
     from . import tube
     from .data import swage, tension, leak, dark_current
-    tube1 = mini_tube.Mini_tube()
-    tube2 = mini_tube.Mini_tube()
+    tube1 = tube.Tube()
+    tube2 = tube.Tube()
     tube1.set_ID("MSU0000001")
     tube2.set_ID("MSU0000001")
     tube1.tension.add_record(tension.TensionRecord(350, user='Paul'))
@@ -64,13 +65,13 @@ def test_db_persistence():
     '''
     This test is a simple test of the DB, not important since the DB code and this test will need to get rewritten.
     '''
-    from . import tube, db
+    from . import db
     from .data import tension, leak
     tubes = db.db()
     dbman = db.db_manager(testing=True)
     dbman.wipe('confirm')
-    tube1 = mini_tube.Mini_tube()
-    tube2 = mini_tube.Mini_tube()
+    tube1 = tube.Tube()
+    tube2 = tube.Tube()
     tube1.set_ID("MSU0000001")
     tube2.set_ID("MSU0000001")
     tube1.tension.add_record(tension.TensionRecord(350))
@@ -101,13 +102,13 @@ def test_db_add_tube():
     '''
     This test is a simple test of adding tubes to the DB, not important since the DB code and this test will need to get rewritten.
     '''
-    from . import tube, db
+    from . import db
     from .data import swage, tension, leak, dark_current
     tubes = db.db()
     dbman = db.db_manager(testing=True)
     dbman.wipe('confirm')
-    tube1 = mini_tube.Mini_tube()
-    tube2 = mini_tube.Mini_tube()
+    tube1 = tube.Tube()
+    tube2 = tube.Tube()
     tube1.set_ID("MSU0000001")
     tube2.set_ID("MSU0000001")
     tube1.tension.add_record(tension.TensionRecord(350))

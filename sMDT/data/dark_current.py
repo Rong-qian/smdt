@@ -54,7 +54,7 @@ class DarkCurrentRecord(Record):
     def fail(self):
         if self.dark_current is None:
             return True
-        elif self.dark_current > DarkCurrentRecord.max_individual_current:
+        elif float(self.dark_current) > DarkCurrentRecord.max_individual_current:
             return True
         else:
             return False

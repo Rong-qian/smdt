@@ -10,8 +10,7 @@
 #   Known Issues:
 #
 #   Workarounds:
-#   
-#    Rongqian, 28 June, 2023: Updated to include information for the chamber position
+#
 ###############################################################################
 
 pyside_version = None

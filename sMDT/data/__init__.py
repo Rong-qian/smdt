@@ -12,4 +12,4 @@
 #
 ###############################################################################
 
-__all__ = ["dark_current", "leak", "swage", "tension", "position"]
+__all__ = ["dark_current", "leak", "swage", "tension"]

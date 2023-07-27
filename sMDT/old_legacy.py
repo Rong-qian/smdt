@@ -7,8 +7,10 @@
 #       file houses all of the necessary information to go from a list of
 #       dictionaries to a list of tube objects, as well as go backwards and do the inverse operation.
 #       
-# Updates: 
-# 2022-06-27 this used to be legacy.py. This is now only for MSU tubes.
+#
+#   Known Issues:
+#
+#   Workarounds:
 #
 ###############################################################################
 

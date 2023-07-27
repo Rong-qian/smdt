@@ -1,5 +1,5 @@
 ###############################################################################
-#   File: db_legacy.py
+#   File: db.py
 #   Author(s): Paul Johnecheck, Dravin Flores
 #   Date Created: 11 April, 2021
 #
@@ -11,8 +11,6 @@
 #   Workarounds: In order to better ensure that the database access is 
 #       restricted, the portalocker library is used; this is a cross-platform
 #       locking library.
-#  Notes:
-#   - This is renamed to db_legacy.py because it only contains MSU information for tubes
 #
 ###############################################################################
 
